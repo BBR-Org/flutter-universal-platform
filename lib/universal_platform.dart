@@ -1,24 +1,37 @@
 library universal_platform;
 
-import 'src/universal_platform_locator.dart' if (dart.library.io) 'src/platform_io.dart';
+import 'src/universal_platform_locator.dart'
+    if (dart.library.io) 'src/platform_io.dart';
 
-export 'src/universal_platform_locator.dart' if (dart.library.io) 'src/platform_io.dart';
+export 'src/universal_platform_locator.dart'
+    if (dart.library.io) 'src/platform_io.dart';
 
 abstract class UniversalPlatform {
   static UniversalPlatformType get value => currentUniversalPlatform;
 
-  static bool get isWeb => currentUniversalPlatform == UniversalPlatformType.Web;
-  static bool get isMacOS => currentUniversalPlatform == UniversalPlatformType.MacOS;
-  static bool get isWindows => currentUniversalPlatform == UniversalPlatformType.Windows;
-  static bool get isLinux => currentUniversalPlatform == UniversalPlatformType.Linux;
-  static bool get isAndroid => currentUniversalPlatform == UniversalPlatformType.Android;
-  static bool get isIOS => currentUniversalPlatform == UniversalPlatformType.IOS;
-  static bool get isFuchsia => currentUniversalPlatform == UniversalPlatformType.Fuchsia;
+  static bool get isWeb =>
+      currentUniversalPlatform == UniversalPlatformType.Web;
+  static bool get isMacOS =>
+      currentUniversalPlatform == UniversalPlatformType.MacOS;
+  static bool get isWindows =>
+      currentUniversalPlatform == UniversalPlatformType.Windows;
+  static bool get isLinux =>
+      currentUniversalPlatform == UniversalPlatformType.Linux;
+  static bool get isAndroid =>
+      currentUniversalPlatform == UniversalPlatformType.Android;
+  static bool get isIOS =>
+      currentUniversalPlatform == UniversalPlatformType.IOS;
+  static bool get isFuchsia =>
+      currentUniversalPlatform == UniversalPlatformType.Fuchsia;
 
-  static bool get isApple => UniversalPlatform.isIOS || UniversalPlatform.isMacOS;
-  static bool get isMobile => UniversalPlatform.isIOS || UniversalPlatform.isAndroid;
+  static bool get isApple =>
+      UniversalPlatform.isIOS || UniversalPlatform.isMacOS;
+  static bool get isMobile =>
+      UniversalPlatform.isIOS || UniversalPlatform.isAndroid;
   static bool get isDesktop => isLinux || isMacOS || isWindows;
-  static bool get isDesktopOrWeb => UniversalPlatform.isDesktop || UniversalPlatform.isWeb;
+  static bool get isDesktopOrWeb =>
+      UniversalPlatform.isDesktop || UniversalPlatform.isWeb;
+  static bool get isTV => UniversalPlatform.isTV;
 
   static String get operatingSystem {
     switch (value) {
@@ -36,6 +49,10 @@ abstract class UniversalPlatform {
         return "ios";
       case UniversalPlatformType.Fuchsia:
         return "fuchsia";
+      case UniversalPlatformType.AndroidTv:
+        return "android_tv";
+      default:
+        return "unknown";
     }
   }
 }
@@ -48,4 +65,6 @@ enum UniversalPlatformType {
   Android,
   Fuchsia,
   IOS,
+  AndroidTv,
+  Unknown,
 }
