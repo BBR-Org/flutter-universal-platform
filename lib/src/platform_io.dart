@@ -4,21 +4,27 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 import '../universal_platform.dart';
 
-//Override default method, to provide .io access
-Future<UniversalPlatformType> get currentUniversalPlatform async {
-  if (Platform.isWindows) return UniversalPlatformType.Windows;
-  if (Platform.isFuchsia) return UniversalPlatformType.Fuchsia;
-  if (Platform.isMacOS) return UniversalPlatformType.MacOS;
-  if (Platform.isLinux) return UniversalPlatformType.Linux;
-  if (Platform.isIOS) return UniversalPlatformType.IOS;
+UniversalPlatformType? _platformType;
+
+// Define the enum for Universal Platform Types
+Future<void> initializePlatform() async {
+  if (_platformType != null) return;
+  if (Platform.isWindows) _platformType = UniversalPlatformType.Windows;
+  if (Platform.isFuchsia) _platformType = UniversalPlatformType.Fuchsia;
+  if (Platform.isMacOS) _platformType = UniversalPlatformType.MacOS;
+  if (Platform.isLinux) _platformType = UniversalPlatformType.Linux;
+  if (Platform.isIOS) _platformType = UniversalPlatformType.IOS;
   if (Platform.isAndroid) {
     // Check if it's an Android TV
     final deviceInfo = DeviceInfoPlugin();
     final androidInfo = await deviceInfo.androidInfo;
     if (androidInfo.systemFeatures.contains('android.software.leanback')) {
-      return UniversalPlatformType.AndroidTv;
+      _platformType = UniversalPlatformType.AndroidTv;
     }
-    return UniversalPlatformType.Android;
+    _platformType = UniversalPlatformType.Android;
   }
-  return UniversalPlatformType.Unknown;
 }
+
+//Override default method, to provide .io access
+UniversalPlatformType get currentUniversalPlatform =>
+    _platformType ?? UniversalPlatformType.Unknown;
